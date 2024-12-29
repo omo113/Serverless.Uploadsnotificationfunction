@@ -1,0 +1,47 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Sqs to Sns notifaction Lambda
+Globals:
+  Function:
+    Timeout: 10
+    MemorySize: 512
+    LoggingConfig:
+      LogFormat: JSON
+Parameters:
+  SQSQueueArn:
+    Type: String
+    Default: arn:aws:sqs:eu-central-1:207567801889:omari-sqs
+    Description: The ARN of the SQS Queue
+  SnsTopicArn:
+    Type: String
+    Default: arn:aws:sns:eu-central-1:207567801889:omari-sns
+    Description: Arn of the SNS topic
+Resources:
+  NotificationFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: NotificationFunction
+      Handler: Serverless.UploadsNotificationFunction::Serverless.UploadsNotificationFunction.Function::FunctionHandler
+      Runtime: dotnet8
+      Timeout: 30
+      MemorySize: 512
+      Architectures:
+      - x86_64
+      Environment:
+        Variables:
+          SnsConfiguration__TopicArn:
+            Ref: SnsTopicArn
+      Events:
+        MySQSEvent:
+          Type: SQS
+          Properties:
+            Queue:
+              Ref: SQSQueueArn
+            BatchSize: 10
+      Policies:
+      - AWSLambda_FullAccess
+      - AWSLambdaSQSQueueExecutionRole
+      - AmazonSNSFullAccess
+      - AmazonSQSFullAccess
+    Metadata:
+      SamResourceId: NotificationFunction

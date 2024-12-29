@@ -9,7 +9,7 @@ public static class Extensions
     {
         bootstrapper.Configuration = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile("appsettings.json", false, true)
+            .AddJsonFile("appsettings.json", true, true)
             .AddEnvironmentVariables()
             .Build();
         return bootstrapper;

@@ -38,7 +38,7 @@ public sealed class Function
     /// <returns>An object indicating the result of the function execution.</returns>
     public async Task<object> FunctionHandler(SQSEvent sqsEvent, ILambdaContext context)
     {
-        context.Logger.LogInformation("test");
+
 
         if (sqsEvent?.Records == null || sqsEvent.Records.Count == 0)
         {
@@ -48,6 +48,7 @@ public sealed class Function
                 body = "No messages to process. Lambda function completed"
             };
         }
+        context.Logger.LogInformation(TopicArn);
 
         var processedCount = await ProcessRecords(sqsEvent.Records, context);
 
