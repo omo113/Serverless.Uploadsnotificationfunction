@@ -23,7 +23,7 @@ Resources:
   NotificationFunction:
     Type: AWS::Serverless::Function
     Properties:
-        CodeUri: ./Serverless.UploadsNotificationFunction/src/
+        CodeUri: .\Serverless.UploadsNotificationFunction\src\Serverless.UploadsNotificationFunction
         Handler: Serverless.UploadsNotificationFunction::Serverless.UploadsNotificationFunction.Function::FunctionHandler
         Runtime: dotnet8
         Timeout: 30
