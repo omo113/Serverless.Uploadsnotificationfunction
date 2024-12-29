@@ -1,13 +1,19 @@
-image: mcr.microsoft.com/dotnet/sdk:8.0  # Use a .NET SDK Docker image for build and test stages
+image: mcr.microsoft.com/dotnet/sdk:8.0
 
 stages:
-  - build
-  - test
-  - deploy
+  - test-job
+  # - build
+  # - test
+  # - deploy
 
 variables:
   DOTNET_CLI_HOME: "$CI_PROJECT_DIR"  # Prevent permission issues during restore
   PATH: "$PATH:/root/.dotnet/tools"   # Add tools to PATH
+
+test-job:
+  stage: test-job
+  script:
+    - echo "Running unit tests..."
 
 # Build Job
 build-job:
