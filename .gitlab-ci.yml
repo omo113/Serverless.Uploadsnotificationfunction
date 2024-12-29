@@ -11,11 +11,11 @@ build-job:
   stage: build
   script:
     - echo "Restoring .NET dependencies..."
-    - dotnet restore Serverless.UploadsNotificationFunction/src/  # Restore dependencies
+    - dotnet restore Serverless.UploadsNotificationFunction/src/Serverless.UploadsNotificationFunction  # Restore dependencies
     - echo "Building .NET project..."
-    - dotnet build Serverless.UploadsNotificationFunction/src/ -c Release  # Build the project
+    - dotnet build Serverless.UploadsNotificationFunction/src/Serverless.UploadsNotificationFunction -c Release  # Build the project
     - echo "Publishing .NET Lambda..."
-    - dotnet publish Serverless.UploadsNotificationFunction/src/ -c Release -f net8.0 -o publish/
+    - dotnet publish Serverless.UploadsNotificationFunction/src/Serverless.UploadsNotificationFunction -c Release -f net8.0 -o publish/
     - echo "Building SAM application..."
     - sam build --template template.yaml --use-container  # Build the SAM application using container for Lambda
 
