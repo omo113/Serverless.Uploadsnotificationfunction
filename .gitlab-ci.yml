@@ -3,10 +3,6 @@ image: mcr.microsoft.com/dotnet/sdk:8.0
 stages:
   - test-job
 
-variables:
-  DOTNET_CLI_HOME: "$CI_PROJECT_DIR"
-  PATH: "$PATH:/root/.dotnet/tools"
-
 test-job:
   stage: test-job
   script:
