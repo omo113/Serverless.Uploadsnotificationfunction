@@ -6,11 +6,6 @@ stages:
   - deploy
 
 
-test-job:
-  stage: test-job
-  script:
-    - echo "Running unit tests..."
-
 # Build Job
 build-job:
   stage: build
