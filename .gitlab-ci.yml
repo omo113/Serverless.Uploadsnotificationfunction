@@ -1,49 +1,44 @@
-# This file is a template, and might need editing before it works on your project.
-# This is a sample GitLab CI/CD configuration file that should run without any modifications.
-# It demonstrates a basic 3 stage CI/CD pipeline. Instead of real tests or scripts,
-# it uses echo commands to simulate the pipeline execution.
-#
-# A pipeline is composed of independent jobs that run scripts, grouped into stages.
-# Stages run in sequential order, but jobs within stages run in parallel.
-#
-# For more information, see: https://docs.gitlab.com/ee/ci/yaml/index.html#stages
-#
-# You can copy and paste this template into a new `.gitlab-ci.yml` file.
-# You should not add this template to an existing `.gitlab-ci.yml` file by using the `include:` keyword.
-#
-# To contribute improvements to CI/CD templates, please follow the Development guide at:
-# https://docs.gitlab.com/ee/development/cicd/templates.html
-# This specific template is located at:
-# https://gitlab.com/gitlab-org/gitlab/-/blob/master/lib/gitlab/ci/templates/Getting-Started.gitlab-ci.yml
+image: mcr.microsoft.com/dotnet/sdk:8.0  # Use a .NET SDK Docker image for build and test stages
 
-stages:          # List of stages for jobs, and their order of execution
+stages:
   - build
   - test
   - deploy
 
-build-job:       # This job runs in the build stage, which runs first.
+variables:
+  DOTNET_CLI_HOME: "$CI_PROJECT_DIR"  # Prevent permission issues during restore
+  PATH: "$PATH:/root/.dotnet/tools"   # Add tools to PATH
+
+# Build Job
+build-job:
   stage: build
   script:
-    - echo "Compiling the code..."
-    - echo "Compile complete."
+    - echo "Restoring .NET dependencies..."
+    - dotnet restore Serverless.UploadsNotificationFunction/src/  # Restore dependencies
+    - echo "Building .NET project..."
+    - dotnet build Serverless.UploadsNotificationFunction/src/ -c Release  # Build the project
+    - echo "Publishing .NET Lambda..."
+    - dotnet publish Serverless.UploadsNotificationFunction/src/ -c Release -f net8.0 -o publish/
+    - echo "Building SAM application..."
+    - sam build --template template.yaml --use-container  # Build the SAM application using container for Lambda
 
-unit-test-job:   # This job runs in the test stage.
-  stage: test    # It only starts when the job in the build stage completes successfully.
+# Test Job
+unit-test-job:
+  stage: test
   script:
-    - echo "Running unit tests... This will take about 60 seconds."
-    - sleep 60
-    - echo "Code coverage is 90%"
+    - echo "Running unit tests..."
+    - dotnet test Serverless.UploadsNotificationFunction/src/Tests/  # Replace with your test project path
+    - echo "Unit tests completed successfully."
 
-lint-test-job:   # This job also runs in the test stage.
-  stage: test    # It can run at the same time as unit-test-job (in parallel).
-  script:
-    - echo "Linting code... This will take about 10 seconds."
-    - sleep 10
-    - echo "No lint issues found."
-
-deploy-job:      # This job runs in the deploy stage.
-  stage: deploy  # It only runs when *both* jobs in the test stage complete successfully.
+# Deploy Job
+deploy-job:
+  stage: deploy
+  image: amazon/aws-cli:2.12.6  # Use AWS CLI image for deployment
   environment: production
   script:
-    - echo "Deploying application..."
-    - echo "Application successfully deployed."
+    - echo "Packaging SAM application..."
+    - sam package --s3-bucket omo-bucket-01 --output-template-file packaged.yaml
+    - echo "Deploying SAM application to AWS..."
+    - sam deploy --template-file packaged.yaml --stack-name ServerlessLambdaStack --capabilities CAPABILITY_IAM
+  only:
+    - main  # Deploy only from the main branch
