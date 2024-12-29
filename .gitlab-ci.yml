@@ -10,6 +10,8 @@ stages:
 build-job:
   stage: build
   script:
+    - curl "https://github.com/aws/aws-sam-cli/releases/latest/download/aws-sam-cli-linux-x86_64.zip" -L -o "aws-sam-cli.zip"
+    - unzip aws-sam-cli.zip -d sam-installation
     - echo "Restoring .NET dependencies..."
     - dotnet restore Serverless.UploadsNotificationFunction/src/Serverless.UploadsNotificationFunction  # Restore dependencies
     - echo "Building .NET project..."
