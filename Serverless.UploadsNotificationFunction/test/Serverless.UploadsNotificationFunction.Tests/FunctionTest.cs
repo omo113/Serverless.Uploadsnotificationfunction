@@ -7,16 +7,17 @@ namespace Serverless.UploadsNotificationFunction.Tests;
 public class FunctionTest
 {
     [Fact]
-    public async Task TestSQSEventLambdaFunction()
+    public void TestSQSEventLambdaFunction()
     {
         var snsEvent = new SQSEvent()
         {
-            Records = new List<SQSEvent.SQSMessage>()
-            {
-                new() {
+            Records =
+            [
+                new SQSEvent.SQSMessage
+                {
                     Body = "test"
                 }
-            }
+            ]
         };
 
         var logger = new TestLambdaLogger();
