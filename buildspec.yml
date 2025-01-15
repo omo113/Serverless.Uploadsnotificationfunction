@@ -5,9 +5,6 @@ phases:
   install:
     runtime-versions:
       dotnet: 8.0
-    # commands:
-    #   - echo "Installing .NET 8 dependencies..."
-    #   - dotnet restore YourSolution.sln
 
   pre_build:
     commands:
