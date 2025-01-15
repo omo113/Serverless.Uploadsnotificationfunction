@@ -14,6 +14,7 @@ Parameters:
     Type: String
     Default: "arn:aws:sqs:eu-north-1:207567801889:omari-sqs"
     Description: The ARN of the SQS Queue
+
   SnsTopicArn:
     Type: String
     Default: "arn:aws:sns:eu-north-1:207567801889:omari-sns"
@@ -23,23 +24,23 @@ Resources:
   NotificationFunction:
     Type: AWS::Serverless::Function
     Properties:
-        CodeUri: .\Serverless.UploadsNotificationFunction\src\Serverless.UploadsNotificationFunction
-        Handler: Serverless.UploadsNotificationFunction::Serverless.UploadsNotificationFunction.Function::FunctionHandler
-        Runtime: dotnet8
-        Timeout: 30
-        MemorySize: 512
-        Architectures:
+      CodeUri: published/
+      Handler: Serverless.UploadsNotificationFunction::Serverless.UploadsNotificationFunction.Function::FunctionHandler
+      Runtime: dotnet8
+      Timeout: 30
+      MemorySize: 512
+      Architectures:
         - x86_64
-        Environment:
-          Variables:
-            SnsConfiguration__TopicArn: !Ref SnsTopicArn
-        Events:
-          MySQSEvent:
-            Type: SQS
-            Properties:
-              Queue: !Ref SQSQueueArn
-              BatchSize: 10
-        Policies:
+      Environment:
+        Variables:
+          SnsConfiguration__TopicArn: !Ref SnsTopicArn
+      Events:
+        MySQSEvent:
+          Type: SQS
+          Properties:
+            Queue: !Ref SQSQueueArn
+            BatchSize: 10
+      Policies:
         - AWSLambda_FullAccess
         - AWSLambdaSQSQueueExecutionRole
         - AmazonSNSFullAccess
