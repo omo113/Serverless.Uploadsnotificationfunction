@@ -1,0 +1,41 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      dotnet: 8
+    # commands:
+    #   - echo "Installing .NET 8 dependencies..."
+    #   - dotnet restore YourSolution.sln
+
+  pre_build:
+    commands:
+      - echo "Running unit tests..."
+      # Remove this block or comment it out if you don’t have tests or don’t want to run them
+      - dotnet test 
+
+  build:
+    commands:
+      - echo "Building .NET 8 project..."
+      - dotnet publish Serverless.UploadsNotificationFunction/src/Serverless.UploadsNotificationFunction/Serverless.UploadsNotificationFunction.csproj -c Release -o published
+      
+      - echo "Packaging with SAM..."
+      # The template.yaml should define your Lambda & other AWS resources
+      - sam package \
+          --template-file template.yaml \
+          --s3-bucket omo-bucket-01 \
+          --output-template-file output-template.yaml
+
+  post_build:
+    commands:
+      - echo "Build phase completed successfully."
+
+artifacts:
+  # We specify two things to pass down as artifacts:
+  #  1. The packaged SAM template (output-template.yaml).
+  #  2. The published .NET 8 binaries (published/).
+  type: zip
+  files:
+    - output-template.yaml
+    - published/**/*    # Include all published files
+  discard-paths: yes
