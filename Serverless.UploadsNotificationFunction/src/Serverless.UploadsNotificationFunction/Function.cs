@@ -58,6 +58,7 @@ public sealed class Function
                 Processed Messages    = {processedCount}
                 Remaining Time (ms)   = {context.RemainingTime}
             ");
+        Console.WriteLine("processed successfully ");
 
         return new
         {
