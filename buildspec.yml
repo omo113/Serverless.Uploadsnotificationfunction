@@ -28,7 +28,8 @@ phases:
           --s3-bucket omo-bucket-02 \
           --output-template-file output-template.yaml
       - ls -al
-      - cat output-template.yaml
+      - cd published
+      - ls -al
 
   post_build:
     commands:
