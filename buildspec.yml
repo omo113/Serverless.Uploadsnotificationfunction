@@ -8,9 +8,6 @@ phases:
     # commands:
     #   - echo "Installing .NET 8 dependencies..."
     #   - dotnet restore YourSolution.sln
-      commands:
-      - echo "Installing AWS SAM CLI..."
-      - pip install aws-sam-cli
 
   pre_build:
     commands:
@@ -27,8 +24,6 @@ phases:
       # The template.yaml should define your Lambda & other AWS resources
       - sam package   --template-file template.yaml  --output-template-file outputSamTemplate.yaml  --s3-bucket omo-bucket-02 
       - ls -al
-      - cd published
-      - ls -al
 
   post_build:
     commands:
@@ -40,6 +35,6 @@ artifacts:
   #  2. The published .NET 8 binaries (published/).
   type: zip
   files:
-    - output-template.yaml
+    - outputSamTemplate.yaml
     - published/**/*    # Include all published files
   discard-paths: yes

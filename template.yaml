@@ -12,11 +12,11 @@ Globals:
 Parameters:
   SQSQueueArn:
     Type: String
-    Default: "arn:aws:sqs:eu-central-1:207567801889:omari-sqs"
+    Default: "arn:aws:sqs:eu-north-1:207567801889:omari-sqs"
     Description: The ARN of the SQS Queue
   SnsTopicArn:
     Type: String
-    Default: "arn:aws:sns:eu-central-1:207567801889:omari-sns"
+    Default: "arn:aws:sns:eu-north-1:207567801889:omari-sns"
     Description: Arn of the SNS topic
 
 Resources:

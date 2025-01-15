@@ -86,7 +86,7 @@ public sealed class Function
             // Publish to SNS
             await _snsClient.PublishAsync(new PublishRequest
             {
-                TopicArn = TopicArn ?? "arn:aws:sns:eu-central-1:207567801889:omari-sns",
+                TopicArn = TopicArn ?? "arn:aws:sns:eu-north-1:207567801889:omari-sns",
                 Subject = "Processed SQS Queue Messages",
                 Message = record.Body
             });
