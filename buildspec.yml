@@ -1,8 +1,5 @@
 version: 0.2
 
-env:
-  variables:
-    AWS_DEFAULT_REGION: eu-central-1
 
 phases:
   install:
@@ -27,7 +24,7 @@ phases:
       # The template.yaml should define your Lambda & other AWS resources
       - sam package \
           --template-file template.yaml \
-          --s3-bucket omo-bucket-01 \
+          --s3-bucket omo-bucket-02 \
           --output-template-file output-template.yaml
 
   post_build:
