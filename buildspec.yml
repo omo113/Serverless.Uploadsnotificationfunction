@@ -23,6 +23,7 @@ phases:
       - echo "Packaging with SAM..."
       # The template.yaml should define your Lambda & other AWS resources
       - sam package \
+          --debug \
           --template-file template.yaml \
           --s3-bucket omo-bucket-02 \
           --output-template-file output-template.yaml
