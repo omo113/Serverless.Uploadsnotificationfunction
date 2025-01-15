@@ -7,7 +7,7 @@ namespace Serverless.UploadsNotificationFunction.Tests;
 public class FunctionTest
 {
     [Fact]
-    public void TestSQSEventLambdaFunction()
+    public async Task TestSQSEventLambdaFunction()
     {
         var snsEvent = new SQSEvent()
         {
@@ -25,7 +25,7 @@ public class FunctionTest
         {
             Logger = logger
         };
-
+        await Task.Delay(1000);
         var function = new Function();
         //await function.FunctionHandler(snsEvent, context);
 
