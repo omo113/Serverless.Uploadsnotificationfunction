@@ -8,6 +8,9 @@ phases:
     # commands:
     #   - echo "Installing .NET 8 dependencies..."
     #   - dotnet restore YourSolution.sln
+      commands:
+      - echo "Installing AWS SAM CLI..."
+      - pip install aws-sam-cli
 
   pre_build:
     commands:
@@ -22,12 +25,7 @@ phases:
       
       - echo "Packaging with SAM..."
       # The template.yaml should define your Lambda & other AWS resources
-      - sam package \
-          --force-upload \
-          --template-file template.yaml \
-          --output-template-file outputSamTemplate.yaml \
-          --s3-bucket omo-bucket-02 
-          
+      - sam package   --template-file template.yaml  --output-template-file outputSamTemplate.yaml  --s3-bucket omo-bucket-02 
       - ls -al
       - cd published
       - ls -al
