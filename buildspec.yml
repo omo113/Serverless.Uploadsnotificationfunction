@@ -25,8 +25,9 @@ phases:
       - sam package \
           --force-upload \
           --template-file template.yaml \
-          --s3-bucket omo-bucket-02 \
-          --output-template-file outputSamTemplate.yml
+          --output-template-file outputSamTemplate.yaml \
+          --s3-bucket omo-bucket-02 
+          
       - ls -al
       - cd published
       - ls -al
