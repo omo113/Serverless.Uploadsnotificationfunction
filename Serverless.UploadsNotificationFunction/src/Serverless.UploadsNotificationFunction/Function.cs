@@ -39,7 +39,8 @@ public sealed class Function
     public async Task<object> FunctionHandler(SQSEvent sqsEvent, ILambdaContext context)
     {
 
-
+        //will add log for demonstration 
+        Console.WriteLine("add log for demonstration");
         if (sqsEvent?.Records == null || sqsEvent.Records.Count == 0)
         {
             return new
